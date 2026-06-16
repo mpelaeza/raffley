@@ -1,0 +1,28 @@
+<div class="estimator">
+  <h1> Raffle Estimator </h1>
+  <section>
+    <div>
+      { @tickets }
+    </div>
+    @
+    <div>
+      ${ @price }
+    </div>
+    =
+    <div>
+      ${ @tickets * @price }
+    </div>
+  </section>
+  <button phx-click="add_ticket">
+    +
+  </button>
+  <button phx-click="remove_ticket">
+    -
+  </button>
+
+  <form phx-submit="set_price">
+    <label for="price"> Ticket price</label>
+    <input type="number" name="price" value={ @price }/>
+  </form>
+</div>
+

@@ -1,0 +1,24 @@
+<div class="raffle-show">
+  <div class="raffle">
+    <img src={@raffle.image_path} />
+    <section>
+      <.badge status={@raffle.status} />
+      <header>
+        <h2> {@raffle.prize} </h2>
+        <div class="price">
+          ${@raffle.ticket_price} / ticket
+        </div>
+      </header>
+        <div class="description">
+        <h3>{@raffle.description}</h3>
+        </div>
+    </section>
+  </div>
+  <div class="activity">
+    <div class="left"></div>
+    <div class="right">
+      <.featured_raffles featured_raffles={@featured_raffles} />
+      
+    </div>
+  </div>
+</div>
