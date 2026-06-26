@@ -7,6 +7,27 @@ To start your Phoenix server:
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
+## Docker
+
+Requiere una base de datos PostgreSQL accesible. Seteá estas env vars o el proyecto usará defaults localhost/root/postgres/raffley_dev.
+
+```sh
+# Build y arrancar
+docker compose up -d
+
+# Setup DB (crear, migrar, seeds)
+docker compose exec app mix ecto.setup
+
+# O solo seeds
+docker compose exec app mix run priv/repo/seeds.exs
+
+# Logs
+docker compose logs -f app
+
+# Detener
+docker compose down
+```
+
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
 ## Learn more

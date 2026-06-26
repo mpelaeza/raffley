@@ -1,0 +1,12 @@
+services:
+  app:
+    build: .
+    container_name: "raffley"
+    ports:
+      - "4001:4000"
+    environment:
+      MIX_ENV: dev
+      PHX_HOST: localhost
+      PORT: 4000
+      PHX_SERVER: "true"
+
