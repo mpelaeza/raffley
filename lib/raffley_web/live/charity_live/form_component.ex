@@ -57,7 +57,7 @@ defmodule RaffleyWeb.CharityLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Charity updated successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
@@ -72,7 +72,7 @@ defmodule RaffleyWeb.CharityLive.FormComponent do
         {:noreply,
          socket
          |> put_flash(:info, "Charity created successfully")
-         |> push_patch(to: socket.assigns.patch)}
+         |> push_navigate(to: socket.assigns.patch)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign(socket, form: to_form(changeset))}
