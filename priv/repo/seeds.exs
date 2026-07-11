@@ -16,6 +16,10 @@
 #
 alias Raffley.Repo
 alias Raffley.Raffles.Raffle
+alias Raffley.Charities.Charity
+
+hope = %Charity{name: "Homes of hope", slug: "homes-of-hope"}
+       |> Repo.insert!()
 
 %Raffle{
   prize: "Autographed Jersey",
@@ -24,7 +28,8 @@ alias Raffley.Raffles.Raffle
   """,
   ticket_price: 2,
   status: :open,
-  image_path: "/images/jersey.jpg"
+  image_path: "/images/jersey.jpg",
+  charity: hope
 }
 |> Repo.insert!()
 

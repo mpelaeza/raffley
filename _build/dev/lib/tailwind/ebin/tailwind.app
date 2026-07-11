@@ -1,0 +1,12 @@
+{application,tailwind,
+             [{config_mtime,1783812580},
+              {optional_applications,[inets,ssl]},
+              {applications,[kernel,stdlib,elixir,logger,inets,ssl]},
+              {description,"Mix tasks for installing and invoking tailwind"},
+              {modules,['Elixir.Mix.Tasks.Tailwind',
+                        'Elixir.Mix.Tasks.Tailwind.Install',
+                        'Elixir.Tailwind']},
+              {registered,[]},
+              {vsn,"0.4.0"},
+              {mod,{'Elixir.Tailwind',[]}},
+              {env,[{default,[]}]}]}.
