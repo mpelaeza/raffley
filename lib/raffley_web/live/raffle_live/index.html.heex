@@ -8,7 +8,7 @@
         Any Guess ??
       </:details>
   </.banner>
-  <.filter_form form={@form} />
+  <.filter_form form={@form} charity_options={@charity_options} />
   <div id="raffles" class="raffles" phx-update="stream">
     <div id="empty" class="no-results only:block hidden">
       No raffles found. Try changing your filters

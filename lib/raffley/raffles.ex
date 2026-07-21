@@ -1,6 +1,7 @@
 defmodule Raffley.Raffles do
 
   alias Raffley.Raffles.Raffle
+  alias Raffley.Charities.Charity
   alias Raffley.Repo
 
   import Ecto.Query
@@ -14,9 +15,22 @@ defmodule Raffley.Raffles do
     Raffle
     |> with_status(filter["status"])
     |> search_by(filter["q"])
+    |> with_charity(filter["charity"])
     |> sort(filter["sort_by"])
     |> preload(:charity)
     |> Repo.all()
+  end
+
+  defp with_charity(query, charity_slug) when charity_slug in ["", nil], do: query
+
+  defp with_charity(query, charity_slug) do
+    # from r in query,
+    # join: c in Charity,
+    # on: r.charity_id == c.id, where: c.slug == ^charity_slug
+
+    from r in query,
+      join: c in assoc(r, :charity),
+      on: r.charity_id == c.id, where: c.slug == ^charity_slug
   end
 
 
@@ -37,6 +51,12 @@ defmodule Raffley.Raffles do
   defp sort(query, "ticket_price"), do: order_by(query, asc: :ticket_price)
 
   defp sort(query, "-ticket_price"), do: order_by(query, desc: :ticket_price)
+
+  defp sort(query, "charity") do
+    from r in query,
+      join: c in assoc(r, :charity),
+      order_by: c.name
+  end
 
   defp sort(query, _), do: query
 

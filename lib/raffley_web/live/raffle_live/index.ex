@@ -2,12 +2,14 @@ defmodule RaffleyWeb.RaffleLive.Index do
   use RaffleyWeb, :live_view
 
   alias Raffley.Raffles
+  alias Raffley.Charities
   import RaffleyWeb.Components.BannerComponents
   import RaffleyWeb.Components.BadgeComponents
 
   def mount(_params, _session, socket) do
     socket = socket
               |> assign(form: to_form(%{}))
+              |> assign(:charity_options,  Charities.charity_name_and_slug())
     {:ok, socket}
   end
 
@@ -15,7 +17,6 @@ defmodule RaffleyWeb.RaffleLive.Index do
     socket = socket
              |> stream(:raffles, Raffles.filter_raffles(params), reset: true)
              |> assign(form: to_form(params))
-
     {:noreply, socket}
   end
 
@@ -42,10 +43,11 @@ defmodule RaffleyWeb.RaffleLive.Index do
   end
 
   attr :form, :map, required: true
+  attr :charity_options, :map
 
   def filter_form(assigns) do
     ~H"""
-          <.form for={@form} phx-change="filter">
+    <.form for={@form} phx-change="filter">
       <.input
         type="text"
         field={@form[:q]}
@@ -60,6 +62,12 @@ defmodule RaffleyWeb.RaffleLive.Index do
         field={@form[:status]}
         options={["Upcoming": "upcoming" ,"Open": "open", "Closed": "closed"]}
         />
+       <.input
+        type="select"
+        prompt="Charity"
+        field={@form[:charity]}
+        options={@charity_options}
+        />
       <.input
         type="select"
         prompt="Sort by"
@@ -67,14 +75,14 @@ defmodule RaffleyWeb.RaffleLive.Index do
         options={[
           Prize: "prize",
           "Price: Low to High": "ticket_price",
-          "Price: High to Low": "-ticket_price"
+          "Price: High to Low": "-ticket_price",
+          Charity: "charity"
         ]}
         />
         <.link patch={~p"/raffles"} class="clear-filters">
           Clear
         </.link>
     </.form>
-
     """
   end
 
@@ -84,7 +92,7 @@ defmodule RaffleyWeb.RaffleLive.Index do
              |> assign(form: to_form(params))
 
     params = params 
-             |> Map.take(~w(q status sort_by))
+             |> Map.take(~w(q status sort_by charity))
              |> Map.reject(fn {_k, v} -> v in [nil, ""] end)
 
 
