@@ -51,6 +51,8 @@ defmodule RaffleyWeb.Router do
      get "/raffles", RaffleController, :index
      get "/raffles/:id", RaffleController, :show
      get "/raffles/:raffle_id/charity", CharityController, :show
+     post "/raffles", RaffleController, :create
+     patch "/raffles/:id", RaffleController, :update
 
      get "/charities", CharityController, :index
      get "/charities/:id", CharityController, :show

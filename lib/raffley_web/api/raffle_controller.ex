@@ -17,4 +17,31 @@ defmodule RaffleyWeb.Api.RaffleController do
     |> put_view(json: RaffleyWeb.ErrorJSON)
     |> render(:"404")
   end
+
+  def create(conn, %{"raffle" => raffle_params}) do
+    case Admin.create_raffle(raffle_params) do
+      {:ok, raffle} ->
+        conn
+        |> put_status(:created)
+        |> put_resp_header("location", ~p"/api/raffles/#{raffle}")
+        |> render(:show, raffle: raffle)
+      {:error, changeset} ->
+      conn
+      |> put_status(:unprocessable_entity)
+      |> render(:error, changeset: changeset)
+    end
+  end
+
+  def update(conn, %{"id" => id, "raffle" => raffle_params}) do
+    raffle = Admin.get_raffle!(id)
+    case Admin.update_raffle(raffle, raffle_params) do
+      {:ok, raffle} ->
+        conn
+        |> put_status(:ok)
+        |> render(:show, raffle: raffle)
+      {:error, %Ecto.Changeset{} = changeset} ->
+        conn
+        |> render(:error, changeset: changeset)
+    end
+  end
 end
