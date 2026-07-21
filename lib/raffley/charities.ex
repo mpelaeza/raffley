@@ -21,6 +21,13 @@ defmodule Raffley.Charities do
     Repo.all(Charity)
   end
 
+  def charity_name_and_id do
+    query = from c in Charity,
+      order_by: :name,
+      select: {c.name, c.id}
+    Repo.all(query)
+  end
+
   @doc """
   Gets a single charity.
 
@@ -36,6 +43,7 @@ defmodule Raffley.Charities do
 
   """
   def get_charity!(id), do: Repo.get!(Charity, id)
+  def get_charity_with_raffles!(id), do: get_charity!(id) |> Repo.preload(:raffles)
 
   @doc """
   Creates a charity.

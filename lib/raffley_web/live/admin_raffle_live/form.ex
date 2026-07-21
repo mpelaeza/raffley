@@ -3,9 +3,13 @@ defmodule RaffleyWeb.AdminRaffleLive.Form do
 
   alias Raffley.Admin
   alias Raffley.Raffles.Raffle
+  alias Raffley.Charities
 
   def mount(params, _session, socket) do
-  {:ok, apply_action(socket, socket.assigns.live_action, params)}
+    socket = socket
+             |> assign(:charity_options, Charities.charity_name_and_id() ++ [{"Test", 22}])
+             |> apply_action(socket.assigns.live_action, params)
+  {:ok, socket}
   end
 
   defp apply_action(socket, :new, _params) do
@@ -60,6 +64,16 @@ defmodule RaffleyWeb.AdminRaffleLive.Form do
         options={["Upcoming": "upcoming" ,"Open": "open", "Closed": "closed"]}
         required
       />
+
+      <.input
+        type="select"
+        field={@form[:charity_id]}
+        label="Charity"
+        prompt="Choose a charity"
+        options={@charity_options }
+        required
+      />
+
 
       <.input
         type="text"
