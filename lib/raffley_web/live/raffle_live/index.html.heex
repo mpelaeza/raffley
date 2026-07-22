@@ -1,3 +1,4 @@
+<Layouts.app flash={@flash}>
 <div class="raffle-index">
   <.banner :if={false}>
       <.icon name="hero-sparkles-solid" /> Mystery Raffle Comming Soon!
@@ -16,3 +17,4 @@
     <.card :for={{dom_id, raffle} <- @streams.raffles}  raffle={raffle} id={dom_id}/>
   </div>
 </div>
+</Layouts.app>

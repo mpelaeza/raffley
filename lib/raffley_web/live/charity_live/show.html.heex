@@ -1,3 +1,4 @@
+<Layouts.app flash={@flash}>
 <.header>
   Charity {@charity.id}
   <:subtitle>This is a charity record from your database.</:subtitle>
@@ -38,3 +39,4 @@
     patch={~p"/charities/#{@charity}"}
   />
 </.modal>
+</Layouts.app>
