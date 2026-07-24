@@ -39,7 +39,7 @@ defmodule RaffleyWeb.Router do
   scope "/", RaffleyWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live_session :admin, on_mount: [{RaffleyWeb.UserAuth, :mount_current_scope}] do
+    live_session :admin, on_mount: [{RaffleyWeb.UserAuth, :require_authenticated}] do
       scope "/admin" do
         live "/raffles", AdminRaffleLive.Index
         live "/raffles/new", AdminRaffleLive.Form, :new
