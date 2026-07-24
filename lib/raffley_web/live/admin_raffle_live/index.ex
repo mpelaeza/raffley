@@ -14,6 +14,8 @@ defmodule RaffleyWeb.AdminRaffleLive.Index do
 
   def render(assigns) do 
     ~H"""
+    <Layouts.app flash={@flash}>
+
     <div class="admin-index">
       <.button phx-click={
       JS.toggle(
@@ -68,6 +70,8 @@ defmodule RaffleyWeb.AdminRaffleLive.Index do
 
       </.table>
     </div>
+    </Layouts.app>
+
     """
   end
 

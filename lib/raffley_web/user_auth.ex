@@ -219,6 +219,7 @@ defmodule RaffleyWeb.UserAuth do
     socket = mount_current_scope(socket, session)
 
     if socket.assigns.current_scope && socket.assigns.current_scope.user do
+      IO.puts("por aqui")
       {:cont, socket}
     else
       socket =

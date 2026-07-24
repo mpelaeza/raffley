@@ -36,6 +36,7 @@ defmodule RaffleyWeb.AdminRaffleLive.Form do
 
   def render(assigns) do 
     ~H"""
+    <Layouts.app flash={@flash} current_scope={@current_scope}>
     <.header>
       <%= @page_title  %>
     </.header>
@@ -87,6 +88,7 @@ defmodule RaffleyWeb.AdminRaffleLive.Form do
     <.back navigate={~p"/admin/raffles"} >
       Back
     </.back>
+    </Layouts.app>
     """
   end
 

@@ -34,19 +34,26 @@ defmodule RaffleyWeb.Router do
     live "/estimator", EstimatorLive
     live "/raffles", RaffleLive.Index
     live "/raffles/:id", RaffleLive.Show
+  end
 
-    scope "/admin" do
-      live "/raffles", AdminRaffleLive.Index
-      live "/raffles/new", AdminRaffleLive.Form, :new
-      live "/raffles/:id/edit", AdminRaffleLive.Form, :edit
+  scope "/", RaffleyWeb do
+    pipe_through [:browser, :require_authenticated_user]
+
+    live_session :admin, on_mount: [{RaffleyWeb.UserAuth, :mount_current_scope}] do
+      scope "/admin" do
+        live "/raffles", AdminRaffleLive.Index
+        live "/raffles/new", AdminRaffleLive.Form, :new
+        live "/raffles/:id/edit", AdminRaffleLive.Form, :edit
+      end
+
+      live "/charities", CharityLive.Index, :index
+      live "/charities/new", CharityLive.Form, :new
+      live "/charities/:id", CharityLive.Show, :show
+      live "/charities/:id/edit", CharityLive.Form, :edit
     end
 
-    live "/charities", CharityLive.Index, :index
-    live "/charities/new", CharityLive.Form, :new
-    live "/charities/:id", CharityLive.Show, :show
-    live "/charities/:id/edit", CharityLive.Form, :edit
-
   end
+
 
   # Other scopes may use custom stacks.
    scope "/api", RaffleyWeb.Api do

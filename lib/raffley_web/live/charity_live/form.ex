@@ -28,6 +28,7 @@ defmodule RaffleyWeb.CharityLive.Form do
 
   def render(assigns) do
     ~H"""
+    <Layouts.app flash={@flash}>
     <div id="my-div">
       <.live_component
         module={RaffleyWeb.CharityLive.FormComponent}
@@ -38,6 +39,7 @@ defmodule RaffleyWeb.CharityLive.Form do
         patch={~p"/charities"}
       />
     </div>
+    </Layouts.app>
     """
   end
 end
