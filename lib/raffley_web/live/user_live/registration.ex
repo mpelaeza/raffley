@@ -22,13 +22,35 @@ defmodule RaffleyWeb.UserLive.Registration do
           </.header>
         </div>
 
-        <.form for={@form} id="registration_form" phx-submit="save" phx-change="validate">
+        <.form for={@form} id="registration_form" phx-submit="save" phx-change="validate"
+          action={~p"/users/log-in?_action=registered"}
+          method="post"
+          phx-trigger-action={@trigger_submit}>
           <.input
             field={@form[:email]}
             type="email"
             label="Email"
             autocomplete="username"
             spellcheck="false"
+            required
+            phx-mounted={JS.focus()}
+          />
+
+          <.input
+            field={@form[:username]}
+            type="text"
+            label="Username"
+            autocomplete="username"
+            spellcheck="false"
+            required
+            phx-mounted={JS.focus()}
+          />
+
+
+          <.input
+            field={@form[:password]}
+            type="password"
+            label="Password"
             required
             phx-mounted={JS.focus()}
           />
@@ -49,7 +71,8 @@ defmodule RaffleyWeb.UserLive.Registration do
   end
 
   def mount(_params, _session, socket) do
-    changeset = Accounts.change_user_email(%User{}, %{}, validate_unique: false)
+    changeset = User.registration_changeset(%User{}, %{})
+    socket = assign(socket, :trigger_submit, false)
 
     {:ok, assign_form(socket, changeset), temporary_assigns: [form: nil]}
   end
@@ -64,13 +87,8 @@ defmodule RaffleyWeb.UserLive.Registration do
             &url(~p"/users/log-in/#{&1}")
           )
 
-        {:noreply,
-         socket
-         |> put_flash(
-           :info,
-           "An email was sent to #{user.email}, please access it to confirm your account."
-         )
-         |> push_navigate(to: ~p"/users/log-in")}
+        changeset = User.registration_changeset( user, user_params)
+        {:noreply, socket |> assign(trigger_submit: true) |> assign_form(changeset)}
 
       {:error, %Ecto.Changeset{} = changeset} ->
         {:noreply, assign_form(socket, changeset)}
@@ -78,7 +96,7 @@ defmodule RaffleyWeb.UserLive.Registration do
   end
 
   def handle_event("validate", %{"user" => user_params}, socket) do
-    changeset = Accounts.change_user_email(%User{}, user_params, validate_unique: false)
+    changeset = User.registration_changeset(%User{}, user_params)
     {:noreply, assign_form(socket, Map.put(changeset, :action, :validate))}
   end
 
