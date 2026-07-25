@@ -1,4 +1,4 @@
-FROM elixir:1.17.3-otp-27-slim
+FROM elixir:1.20-otp-29-slim
 
 RUN apt-get update -y && \
   apt-get install -y build-essential git inotify-tools && \
