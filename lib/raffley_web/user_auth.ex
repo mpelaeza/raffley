@@ -219,13 +219,27 @@ defmodule RaffleyWeb.UserAuth do
     socket = mount_current_scope(socket, session)
 
     if socket.assigns.current_scope && socket.assigns.current_scope.user do
-      IO.puts("por aqui")
       {:cont, socket}
     else
       socket =
         socket
         |> Phoenix.LiveView.put_flash(:error, "You must log in to access this page.")
         |> Phoenix.LiveView.redirect(to: ~p"/users/log-in")
+
+      {:halt, socket}
+    end
+  end
+
+  def on_mount(:require_admin, _params, session, socket) do
+
+    if socket.assigns.current_scope.user.is_admin do
+      IO.puts("Is Admin")
+      {:cont, socket}
+    else
+      socket =
+        socket
+        |> Phoenix.LiveView.put_flash(:error, "You must to be admin.")
+        |> Phoenix.LiveView.redirect(to: ~p"/")
 
       {:halt, socket}
     end
