@@ -1,6 +1,7 @@
 defmodule Raffley.Raffles do
 
   alias Raffley.Raffles.Raffle
+  alias Raffley.Tickets
   alias Raffley.Charities.Charity
   alias Raffley.Repo
 
@@ -10,8 +11,8 @@ defmodule Raffley.Raffles do
     Repo.all(Raffle)
   end
 
+
   def filter_raffles(filter) do
-    inspect(filter)
     Raffle
     |> with_status(filter["status"])
     |> search_by(filter["q"])
@@ -64,6 +65,15 @@ defmodule Raffley.Raffles do
   def get_raffle!(id) do
     Repo.get!(Raffle, id) |> Repo.preload(:charity)
   end
+
+  def list_tickets(raffle) do
+    raffle 
+    |> Ecto.assoc(:tickets) 
+    |> preload(:user) 
+    |> order_by(desc: :inserted_at)
+    |> Repo.all
+  end
+
 
   def featured_raffle(raffle) do
     Process.sleep(2000)

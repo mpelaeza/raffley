@@ -13,13 +13,36 @@
           ${@raffle.ticket_price} / ticket
         </div>
       </header>
+      <div class="totals">
+        {@ticket_count} Tickets Sold &bull; ${@ticket_sum} Raised
+      </div>
         <div class="description">
         <h3>{@raffle.description}</h3>
         </div>
     </section>
   </div>
   <div class="activity">
-    <div class="left"></div>
+    <div class="left">
+      <%= if @raffle.status == :open do %>
+        <%= if @current_scope do %>
+          <.form for={@form} id="ticket-form"
+            phx-change="validate"
+            phx-submit="buy-ticket">
+            <.input field={@form[:comment]} placeholder="Comment..." autofocus/>
+            <.button type="submit"
+                     phx-disable-with="Saving..."
+                     >
+              Get a Ticket
+            </.button>
+          </.form>
+        <% else %>
+          <.link href={~p"/users/log-in"} class="button">
+           Log In To Get A Ticket
+          </.link>
+        <% end %>
+      <% end %>
+      <.purchased_tickets tickets={@streams.tickets} />
+    </div>
     <div class="right">
       <.featured_raffles featured_raffles={@featured_raffles} />
       
